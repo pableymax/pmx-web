@@ -1,0 +1,1024 @@
+<!DOCTYPE html><html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMX | Pableymax</title>
+<style>
+html{ scroll-behavior:smooth; }
+*{ margin:0; padding:0; box-sizing:border-box; }
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:#020d3a;
+  color:#fff;
+  transition:background-color 0.04s linear;
+}
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 60px;
+  background:rgba(0,0,0,0.9);
+  position:fixed;
+  width:100%;
+  z-index:100;
+}
+nav img{ height:40px; }
+nav ul{ list-style:none; display:flex; gap:30px; align-items:center; }
+nav a{ text-decoration:none; color:white; font-size:16px; transition:0.3s; }
+nav a:hover{ color:#0a2cff; }
+.nav-mas{ position:relative; }
+.nav-mas-btn{
+  background:none; border:none;
+  color:white; font-size:16px;
+  cursor:pointer; display:flex;
+  align-items:center; gap:6px;
+  padding:0; font-family:inherit;
+  transition:color 0.3s;
+}
+.nav-mas-btn:hover{ color:#0a2cff; }
+.nav-mas-btn .arrow{
+  display:inline-block;
+  width:0; height:0;
+  border-left:4px solid transparent;
+  border-right:4px solid transparent;
+  border-top:5px solid currentColor;
+  transition:transform 0.3s ease;
+  margin-top:1px;
+}
+.nav-mas.active .nav-mas-btn .arrow{ transform:rotate(180deg); }
+.nav-mas-dropdown{
+  position:absolute;
+  top:calc(100% + 16px);
+  right:0;
+  background:rgba(5,5,5,0.97);
+  border:1px solid rgba(255,255,255,0.08);
+  border-top:2px solid #0a2cff;
+  border-radius:10px;
+  min-width:220px;
+  overflow:hidden;
+  opacity:0;
+  transform:translateY(-8px) scale(0.97);
+  pointer-events:none;
+  transition:opacity 0.28s ease, transform 0.28s cubic-bezier(0.23,1,0.32,1);
+  box-shadow:0 20px 50px rgba(0,0,0,0.7);
+}
+.nav-mas.active .nav-mas-dropdown{
+  opacity:1;
+  transform:translateY(0) scale(1);
+  pointer-events:all;
+}
+.dropdown-item{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:15px 20px;
+  cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  transition:background 0.2s;
+  text-decoration:none;
+  color:white;
+}
+.dropdown-item:last-child{ border-bottom:none; }
+.dropdown-item:hover{ background:rgba(10,44,255,0.15); }
+.dropdown-item:hover .d-icon{ background:#0a2cff; }
+.d-icon{
+  width:36px; height:36px;
+  border-radius:8px;
+  background:rgba(10,44,255,0.25);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.8rem;
+  flex-shrink:0;
+  transition:background 0.2s;
+  color:#fff;
+  font-weight:600;
+  letter-spacing:0.05em;
+}
+.d-text strong{ display:block; font-size:14px; font-weight:600; color:#fff; }
+.d-text small{ font-size:11px; color:#666; letter-spacing:0.03em; }
+.hamburger{
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  width:44px; height:44px;
+  cursor:pointer;
+  background:none; border:none; padding:0;
+  z-index:200;
+}
+.hamburger span{
+  display:block;
+  width:26px; height:2px;
+  background:#fff; border-radius:2px;
+  transition:transform 0.45s cubic-bezier(0.23,1,0.32,1),
+             opacity   0.35s cubic-bezier(0.23,1,0.32,1),
+             width     0.35s cubic-bezier(0.23,1,0.32,1);
+  transform-origin:center;
+}
+.hamburger.open span:nth-child(1){ transform:translateY(8px) rotate(45deg); }
+.hamburger.open span:nth-child(2){ opacity:0; width:0; }
+.hamburger.open span:nth-child(3){ transform:translateY(-8px) rotate(-45deg); }
+.menu-overlay{
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.97);
+  z-index:150;
+  clip-path:circle(0% at calc(100% - 52px) 42px);
+  transition:clip-path 0.7s cubic-bezier(0.77,0,0.18,1);
+  pointer-events:none;
+}
+.menu-overlay.open{
+  clip-path:circle(150% at calc(100% - 52px) 42px);
+  pointer-events:all;
+}
+.menu-close{
+  position:absolute;
+  top:22px; right:30px;
+  width:44px; height:44px;
+  background:none; border:none; cursor:pointer;
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+  z-index:210;
+  opacity:0;
+  transform:rotate(-90deg) scale(0.7);
+  transition:opacity 0.4s ease 0.3s, transform 0.4s cubic-bezier(0.23,1,0.32,1) 0.3s;
+}
+.menu-overlay.open .menu-close{ opacity:1; transform:rotate(0deg) scale(1); }
+.menu-close span{
+  display:block;
+  width:26px; height:2px;
+  background:#fff; border-radius:2px;
+  transition:background 0.2s ease;
+}
+.menu-close span:nth-child(1){ transform:translateY(1px) rotate(45deg); }
+.menu-close span:nth-child(2){ transform:translateY(-1px) rotate(-45deg); }
+.menu-close:hover span{ background:#0a2cff; }
+.menu-overlay-inner{
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:flex-start;
+  height:100%; padding:0 80px;
+}
+.menu-overlay ul{ list-style:none; display:flex; flex-direction:column; gap:10px; }
+.menu-overlay ul li{ overflow:hidden; }
+.menu-overlay ul li a{
+  display:inline-block;
+  font-size:clamp(42px,7vw,80px);
+  font-weight:700; letter-spacing:-1px;
+  color:#fff; text-decoration:none; line-height:1.1;
+  transform:translateY(100%); opacity:0;
+  transition:transform 0.55s cubic-bezier(0.23,1,0.32,1),
+             opacity   0.45s cubic-bezier(0.23,1,0.32,1),
+             color     0.25s ease;
+}
+.menu-overlay ul li a:hover{ color:#0a2cff; }
+.menu-overlay.open ul li:nth-child(1) a{ transition-delay:0.15s; transform:translateY(0); opacity:1; }
+.menu-overlay.open ul li:nth-child(2) a{ transition-delay:0.22s; transform:translateY(0); opacity:1; }
+.menu-overlay.open ul li:nth-child(3) a{ transition-delay:0.29s; transform:translateY(0); opacity:1; }
+.overlay-mas-section{
+  margin-top:28px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 0.5s ease 0.38s, transform 0.5s ease 0.38s;
+}
+.menu-overlay.open .overlay-mas-section{ opacity:1; transform:translateY(0); }
+.overlay-mas-label{ font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:#444; margin-bottom:12px; }
+.overlay-mas-items{ display:flex; flex-direction:column; gap:10px; }
+.overlay-mas-item{
+  display:flex; align-items:center; gap:14px;
+  padding:14px 18px;
+  background:rgba(10,44,255,0.08);
+  border:1px solid rgba(10,44,255,0.2);
+  border-radius:10px;
+  cursor:pointer;
+  text-decoration:none;
+  color:white;
+  transition:background 0.25s, border-color 0.25s;
+  width:fit-content; min-width:280px;
+}
+.overlay-mas-item:hover{ background:rgba(10,44,255,0.2); border-color:#0a2cff; }
+.overlay-mas-item .d-icon{
+  background:rgba(10,44,255,0.3);
+  width:38px; height:38px;
+  border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.75rem;
+  font-weight:600;
+  color:#fff;
+}
+.overlay-mas-item strong{ display:block; font-size:14px; }
+.overlay-mas-item small{ color:#555; font-size:11px; }
+.menu-overlay-footer{
+  position:absolute;
+  bottom:50px; left:80px; right:80px;
+  display:flex; justify-content:space-between; align-items:center;
+  border-top:1px solid rgba(255,255,255,0.1);
+  padding-top:25px;
+  opacity:0; transform:translateY(20px);
+  transition:opacity 0.5s ease 0.35s, transform 0.5s ease 0.35s;
+}
+.menu-overlay.open .menu-overlay-footer{ opacity:1; transform:translateY(0); }
+.menu-overlay-footer span{ color:#555; font-size:13px; letter-spacing:2px; text-transform:uppercase; }
+
+/* ── MODAL KASTING ── */
+.modal-bg{
+position:fixed; inset:0;
+background:rgba(0,0,0,0.88);
+backdrop-filter:blur(10px);
+z-index:400;
+display:flex; align-items:center; justify-content:center;
+opacity:0; pointer-events:none;
+transition:opacity 0.3s ease;
+}
+.modal-bg.show{ opacity:1; pointer-events:all; }
+.modal{
+background:#0a0a0a;
+border:1px solid #1a1a1a;
+border-top:3px solid #0a2cff;
+border-radius:16px;
+width:min(680px,94vw);
+max-height:88vh;
+overflow-y:auto;
+scrollbar-width:thin;
+scrollbar-color:#0a2cff transparent;
+transform:translateY(20px) scale(0.97);
+transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+.modal-bg.show .modal{ transform:translateY(0) scale(1); }
+.modal-header{
+padding:2rem 2rem 1.5rem;
+border-bottom:1px solid #1a1a1a;
+display:flex; justify-content:space-between; align-items:flex-start; gap:1rem;
+}
+.modal-eyebrow{ font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; color:#0a2cff; margin-bottom:4px; }
+.modal-title{ font-size:1.9rem; font-weight:700; letter-spacing:-0.5px; }
+.modal-subtitle{ color:#555; font-size:0.85rem; margin-top:4px; }
+.modal-close{
+background:none; border:1px solid #222;
+color:#666; width:34px; height:34px;
+border-radius:50%; cursor:pointer;
+font-size:1rem; display:flex;
+align-items:center; justify-content:center;
+flex-shrink:0; transition:all 0.2s;
+font-family:inherit;
+}
+.modal-close:hover{ color:#fff; border-color:#fff; }
+.modal-body{ padding:1.8rem 2rem 2rem; }
+.modal-intro{
+font-size:0.88rem; line-height:1.75;
+color:#777; margin-bottom:1.8rem;
+padding-left:1rem;
+border-left:2px solid #0a2cff;
+}
+.roles-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+gap:10px;
+margin-bottom:1.8rem;
+}
+.role-card{
+background:#0f0f0f;
+border:1px solid #1a1a1a;
+border-radius:10px;
+padding:1.1rem 1.2rem;
+transition:border-color 0.2s, background 0.2s;
+}
+.role-card:hover{ border-color:#0a2cff; background:#111; }
+.role-label{
+font-size:0.6rem;
+letter-spacing:0.2em;
+text-transform:uppercase;
+color:#0a2cff;
+margin-bottom:4px;
+}
+.role-title{
+font-size:0.95rem;
+font-weight:600;
+color:#fff;
+margin-bottom:5px;
+}
+.role-desc{
+font-size:0.72rem;
+color:#555;
+line-height:1.6;
+}
+.upload-area{
+background:#0d0d0d;
+border:1px dashed #222;
+border-radius:10px;
+padding:1.8rem;
+text-align:center;
+margin-bottom:1.4rem;
+cursor:pointer;
+transition:border-color 0.2s;
+}
+.upload-area:hover{ border-color:#0a2cff; }
+.upload-area h3{ font-size:0.95rem; font-weight:600; margin-bottom:6px; }
+.upload-area p{ font-size:0.75rem; color:#555; line-height:1.6; }
+.form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+@media(max-width:500px){ .form-grid{ grid-template-columns:1fr; } .roles-grid{ grid-template-columns:1fr 1fr; } }
+.form-field{ display:flex; flex-direction:column; gap:5px; }
+.form-field.full{ grid-column:1/-1; }
+.form-field label{ font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:#555; }
+.form-field input, .form-field select, .form-field textarea{
+background:#111; border:1px solid #1e1e1e;
+border-radius:6px; color:#fff;
+font-family:inherit; font-size:0.85rem;
+padding:0.6rem 0.85rem; outline:none;
+transition:border-color 0.2s;
+}
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus{ border-color:#0a2cff; }
+.form-field textarea{ resize:vertical; min-height:78px; }
+.form-field select option{ background:#111; }
+.submit-btn{
+width:100%; padding:0.9rem;
+background:#0a2cff; color:#fff;
+font-size:1rem; font-weight:600;
+font-family:inherit;
+border:none; border-radius:8px;
+cursor:pointer; margin-top:4px;
+transition:background 0.2s, transform 0.15s;
+letter-spacing:0.04em;
+}
+.submit-btn:hover{ background:#1f3cff; transform:translateY(-1px); }
+.submit-btn:disabled{ opacity:0.7; cursor:not-allowed; transform:none; }
+
+/* ── MODAL PRONTO ── */
+.soon-bg{
+position:fixed; inset:0;
+background:rgba(0,0,0,0.88);
+backdrop-filter:blur(10px);
+z-index:500;
+display:flex; align-items:center; justify-content:center;
+opacity:0; pointer-events:none;
+transition:opacity 0.3s ease;
+}
+.soon-bg.show{ opacity:1; pointer-events:all; }
+.soon-modal{
+background:#0a0a0a;
+border:1px solid #1a1a1a;
+border-top:3px solid #0a2cff;
+border-radius:16px;
+width:min(420px,90vw);
+padding:2.8rem 2.4rem;
+text-align:center;
+transform:translateY(20px) scale(0.97);
+transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+position:relative;
+}
+.soon-bg.show .soon-modal{ transform:translateY(0) scale(1); }
+.soon-close{
+position:absolute; top:14px; right:14px;
+background:none; border:1px solid #222;
+color:#666; width:30px; height:30px;
+border-radius:50%; cursor:pointer;
+font-size:0.85rem;
+display:flex; align-items:center; justify-content:center;
+transition:all 0.2s;
+font-family:inherit;
+}
+.soon-close:hover{ color:#fff; border-color:#fff; }
+.soon-eyebrow{
+font-size:0.55rem; letter-spacing:0.28em;
+text-transform:uppercase; color:#0a2cff;
+margin-bottom:16px;
+}
+.soon-title{
+font-size:1.5rem; font-weight:700;
+letter-spacing:-0.3px; margin-bottom:10px;
+}
+.soon-text{
+font-size:0.85rem; color:#555;
+line-height:1.7; margin-bottom:0;
+}
+.soon-line{
+width:40px; height:2px;
+background:#0a2cff;
+margin:1.4rem auto 1.4rem;
+border-radius:2px;
+}
+
+/* ── RESTO ── */
+.hero{
+height:100vh;
+display:flex; flex-direction:column;
+justify-content:center; align-items:center;
+text-align:center; padding:0 24px;
+}
+.hero h1{ font-size:80px; letter-spacing:3px; }
+.hero p{ margin-top:10px; font-size:22px; color:#aaa; }
+.hero button{
+margin-top:30px; padding:15px 35px;
+border:none; border-radius:30px;
+background:#0a2cff; color:white;
+font-size:16px; cursor:pointer; transition:0.3s;
+}
+.hero button:hover{ background:#1f3cff; }
+section{ padding:120px 80px; text-align:center; }
+section h2{ font-size:40px; margin-bottom:60px; }
+.grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:30px; }
+.card{
+background:#0b0b0b; padding:40px;
+border-radius:15px; transition:0.4s;
+border:1px solid #111; cursor:pointer;
+}
+.card:hover{
+transform:translateY(-12px) scale(1.04);
+border-color:#0a2cff;
+box-shadow:0 20px 40px rgba(10,44,255,0.3);
+}
+.card h3{ margin-bottom:15px; }
+footer{ padding:40px; text-align:center; background:#000; color:#888; }
+.redes{ margin-top:30px; display:flex; justify-content:center; gap:35px; flex-wrap:wrap; }
+.redes img{ width:28px; filter:brightness(0) invert(1); transition:0.3s; cursor:pointer; }
+.redes img:hover{
+transform:scale(1.2);
+filter:brightness(0) invert(1) drop-shadow(0 0 8px #0a2cff);
+}
+.icono-contacto{ width:200px; }
+.logo-hero{
+width:420px; margin-bottom:20px;
+filter:drop-shadow(0 0 40px #0a2cff) drop-shadow(0 0 80px #0a2cff);
+animation:flotar 6s ease-in-out infinite;
+}
+@keyframes flotar{
+0%{ transform:translateY(0px); }
+50%{ transform:translateY(-12px); }
+100%{ transform:translateY(0px); }
+}
+.final{ padding:120px 80px; text-align:center; border-top:1px solid #111; }
+.final h2{ font-size:50px; margin-bottom:20px; letter-spacing:3px; }
+.final > p{ color:#aaa; margin-bottom:40px; }
+.final-links{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:40px; margin-top:40px; }
+.final-links h4{ margin-bottom:15px; color:white; }
+.final-links p{ color:#777; font-size:14px; transition:0.3s; cursor:pointer; }
+.final-links p:hover{ color:#0a2cff; }
+.final-links a{ display:block; color:#777; font-size:14px; text-decoration:none; margin:6px 0; transition:0.3s; }
+.final-links a:hover{ color:#0a2cff; }
+
+/* ── VIDEO SECTIONS ── */
+.video-section{
+position:relative; height:90vh;
+display:flex; align-items:center; justify-content:center;
+margin:120px auto; padding:0 80px;
+overflow:hidden;
+}
+.video-section::after{
+content:””; position:absolute;
+width:100%; height:100%; top:0; left:0;
+background:linear-gradient(to bottom,rgba(0,0,0,0.2),rgba(0,0,0,0.6));
+pointer-events:none;
+z-index:1;
+}
+.video-text{
+position:absolute; text-align:center; z-index:2;
+}
+.video-text h2{
+font-size:55px; letter-spacing:6px;
+font-weight:300; text-shadow:0 10px 40px rgba(0,0,0,0.9);
+}
+.flecha{
+position:absolute; bottom:35px; right:50px;
+color:white; text-decoration:none; font-size:15px;
+letter-spacing:2px; padding:12px 22px; border-radius:30px;
+background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.25);
+backdrop-filter:blur(6px);
+opacity:0; transform:translateY(15px); transition:all 0.4s ease;
+z-index:3;
+}
+.video-section:hover .flecha{ opacity:1; transform:translateY(0); }
+.flecha:hover{
+background:#0a2cff; border-color:#0a2cff;
+transform:translateX(6px);
+box-shadow:0 0 15px rgba(10,44,255,0.7);
+}
+
+/* ── VIMEO BACKGROUND ── */
+.vimeo-bg{
+position:absolute;
+top:0; left:0;
+width:100%; height:100%;
+overflow:hidden;
+border-radius:25px;
+z-index:0;
+}
+.vimeo-bg iframe{
+position:absolute;
+top:50%; left:50%;
+width:177.78vh;
+height:56.25vw;
+min-width:100%;
+min-height:100%;
+transform:translate(-50%,-50%);
+filter:brightness(0.65) contrast(1.1);
+pointer-events:none;
+border:none;
+}
+
+.reveal{ opacity:0; transform:translateY(60px); transition:all 1.2s ease; }
+.reveal.visible{ opacity:1; transform:translateY(0); }
+
+@media(max-width:1024px){
+nav ul{ display:none; }
+.hamburger{ display:flex; }
+nav{ padding:20px 24px; }
+.menu-overlay-inner{ padding:0 40px; }
+.menu-overlay-footer{ left:40px; right:40px; }
+.overlay-mas-section{ display:block; }
+}
+@media(min-width:1025px){ .overlay-mas-section{ display:none; } }
+@media(max-width:768px){
+nav{ padding:16px 20px; }
+.hero{ padding:0 20px; }
+.logo-hero{ width:72vw; max-width:280px; }
+.hero h1{ font-size:32px; letter-spacing:1px; }
+.hero p{ font-size:14px; color:#888; }
+.hero button{ font-size:14px; padding:12px 26px; margin-top:24px; }
+section{ padding:70px 20px; }
+section h2{ font-size:26px; margin-bottom:36px; }
+.grid{ grid-template-columns:1fr; gap:14px; }
+.card{ padding:24px 18px; border-radius:12px; }
+.card h3{ font-size:16px; margin-bottom:8px; }
+.card p{ font-size:13px; color:#888; line-height:1.5; }
+.video-section{ height:auto; min-height:220px; margin:50px auto; padding:0 16px; }
+.vimeo-bg{ border-radius:14px; }
+.vimeo-bg iframe{ width:100vw; height:56.25vw; min-height:200px; }
+.video-text h2{ font-size:22px; letter-spacing:2px; }
+.flecha{ opacity:1 !important; transform:none !important; position:absolute; bottom:14px; right:14px; font-size:12px; padding:9px 18px; }
+.icono-contacto{ width:110px; }
+.redes{ gap:16px; }
+.final{ padding:70px 20px; }
+.final h2{ font-size:30px; letter-spacing:1px; }
+.final > p{ font-size:14px; }
+.final-links{ grid-template-columns:1fr; gap:28px; text-align:left; }
+.final-links h4{ font-size:15px; }
+.final-links a, .final-links p{ font-size:13px; }
+footer{ padding:20px 16px; font-size:11px; line-height:1.6; }
+.menu-overlay-footer{ flex-direction:column; gap:6px; text-align:center; bottom:36px; }
+.menu-overlay-footer span{ font-size:11px; }
+.overlay-mas-item{ min-width:unset; width:100%; }
+.roles-grid{ grid-template-columns:1fr 1fr; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- NAVBAR -->
+
+<nav>
+  <div class="logo">
+    <a href="#inicio">
+      <img src="img/logo.png.PNG" alt="PMX Logo">
+    </a>
+  </div>
+  <ul>
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#proyectos">Proyectos</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+    <li class="nav-mas" id="navMas">
+      <button class="nav-mas-btn" id="navMasBtn" aria-expanded="false">
+        Más <span class="arrow"></span>
+      </button>
+      <div class="nav-mas-dropdown" id="navMasDropdown">
+        <div class="dropdown-item" onclick="openSoon(); navMas.classList.remove('active');">
+          <div class="d-icon">PMX</div>
+          <div class="d-text">
+            <strong>Productos</strong>
+            <small>Nuestros Productos</small>
+          </div>
+        </div>
+        <div class="dropdown-item" onclick="openKasting()">
+          <div class="d-icon">CV</div>
+          <div class="d-text">
+            <strong>Únete como Talento</strong>
+            <small>Convocatoria Audiovisual Abierta</small>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- OVERLAY MENU (MÓVIL) -->
+
+<div class="menu-overlay" id="menuOverlay">
+  <button class="menu-close" id="menuClose" aria-label="Cerrar menú">
+    <span></span><span></span>
+  </button>
+  <div class="menu-overlay-inner">
+    <ul>
+      <li><a href="#inicio"    class="menu-link">Inicio</a></li>
+      <li><a href="#proyectos" class="menu-link">Proyectos</a></li>
+      <li><a href="#contacto"  class="menu-link">Contacto</a></li>
+    </ul>
+    <div class="overlay-mas-section">
+      <p class="overlay-mas-label">Más</p>
+      <div class="overlay-mas-items">
+        <div class="overlay-mas-item" onclick="closeMenu(); setTimeout(openSoon,350)">
+          <div class="d-icon">PMX</div>
+          <div>
+            <strong>Productos</strong>
+            <small>Nuestros servicios y producciones</small>
+          </div>
+        </div>
+        <div class="overlay-mas-item" onclick="closeMenu(); setTimeout(openKasting,350)">
+          <div class="d-icon">CV</div>
+          <div>
+            <strong>Únete como Talento</strong>
+            <small>Convocatoria Audiovisual Abierta</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="menu-overlay-footer">
+    <span>PMX &copy; 2026</span>
+    <span>One idea, a thousand ways to see it.</span>
+  </div>
+</div>
+
+<!-- MODAL PRONTO (Productos) -->
+
+<div class="soon-bg" id="soonBg">
+  <div class="soon-modal">
+    <button class="soon-close" onclick="closeSoon()">&#x2715;</button>
+    <p class="soon-eyebrow">PMX · Productos</p>
+    <h2 class="soon-title">Esta función no está<br>disponible aún</h2>
+    <div class="soon-line"></div>
+    <p class="soon-text">Estamos trabajando en algo. Pronto lo estará.</p>
+  </div>
+</div>
+
+<!-- MODAL KASTING -->
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div>
+        <p class="modal-eyebrow">PMX · Convocatoria Abierta</p>
+        <h2 class="modal-title">Únete como Talento</h2>
+        <p class="modal-subtitle">Producción Audiovisual — Buscamos perfiles creativos y técnicos</p>
+      </div>
+      <button class="modal-close" onclick="closeKasting()">&#x2715;</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-intro">
+        Estamos en búsqueda de talento para integrarse a proyectos audiovisuales de PMX.
+        Si tienes experiencia o disposición para crecer en el medio, esta convocatoria es para ti.
+        Envíanos tu portafolio o currículum y el equipo lo evaluará.
+      </p>
+      <div class="roles-grid">
+        <div class="role-card">
+          <p class="role-label">Rol 01</p>
+          <p class="role-title">Actor</p>
+          <p class="role-desc">Personajes para ficción, cortometrajes y contenido de marca. Todos los rangos y perfiles.</p>
+        </div>
+        <div class="role-card">
+          <p class="role-label">Rol 02</p>
+          <p class="role-title">Camarógrafo</p>
+          <p class="role-desc">Operación de cámara en set y locación. Conocimiento de composición y exposición requerido.</p>
+        </div>
+        <div class="role-card">
+          <p class="role-label">Rol 03</p>
+          <p class="role-title">Guionista</p>
+          <p class="role-desc">Desarrollo de historia, diálogos y estructura narrativa para proyectos de distintos formatos.</p>
+        </div>
+        <div class="role-card">
+          <p class="role-label">Rol 04</p>
+          <p class="role-title">Editor</p>
+          <p class="role-desc">Montaje, color y postproducción. Dominio de software de edición no lineal valorado.</p>
+        </div>
+        <div class="role-card">
+          <p class="role-label">Rol 05</p>
+          <p class="role-title">Director</p>
+          <p class="role-desc">Visión creativa, dirección de actores y coordinación general de producción en set.</p>
+        </div>
+      </div>
+      <div class="upload-area">
+        <h3>Adjunta tu Portafolio o Videocasting</h3>
+        <p>Arrastra tu archivo o haz clic para seleccionar<br>
+        MP4, MOV, PDF · máx 500 MB · o pega un enlace de YouTube / Drive</p>
+      </div>
+      <form id="kastingForm">
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Nombre completo</label>
+            <input type="text" name="nombre" placeholder="Tu nombre" required>
+          </div>
+          <div class="form-field">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="correo@email.com" required>
+          </div>
+          <div class="form-field">
+            <label>Teléfono</label>
+            <input type="tel" name="telefono" placeholder="+57 300 000 0000">
+          </div>
+          <div class="form-field">
+            <label>Rol al que aplicas</label>
+            <select name="rol">
+              <option value="">Selecciona...</option>
+              <option>Actor</option>
+              <option>Camarógrafo</option>
+              <option>Guionista</option>
+              <option>Editor</option>
+              <option>Director</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="form-field full">
+            <label>Enlace a portafolio / vídeo (opcional)</label>
+            <input type="url" name="portfolio" placeholder="https://youtube.com/...">
+          </div>
+          <div class="form-field full">
+            <label>Cuéntanos sobre ti</label>
+            <textarea name="mensaje" placeholder="Experiencia, formación, proyectos previos, herramientas..."></textarea>
+          </div>
+        </div>
+        <button class="submit-btn" type="submit">Enviar Candidatura &rarr;</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+
+<div class="hero" id="inicio">
+  <a href="#inicio">
+    <img src="img/logo.png.PNG" class="logo-hero">
+  </a>
+  <p>One idea, a thousand ways to see it.</p>
+  <button onclick="location.href='#proyectos'">Ver proyectos</button>
+</div>
+
+<!-- PROYECTOS -->
+
+<section id="proyectos" class="reveal">
+  <h2>PROYECTOS</h2>
+  <div class="grid">
+    <div class="card" onclick="scrollToSection('produccion')">
+      <h3>Producción Visual</h3>
+      <p>Creación de contenido cinematográfico como películas, cortometrajes, largometrajes y series.</p>
+    </div>
+    <div class="card" onclick="scrollToSection('filmmaking')">
+      <h3>Filmmaking</h3>
+      <p>Creación de videos y contenido audiovisual con estilo cinematográfico.</p>
+    </div>
+    <div class="card" onclick="scrollToSection('contenido')">
+      <h3>Contenido Creativo</h3>
+      <p>Videos e ideas visuales para redes sociales.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO: PRODUCCIÓN -->
+
+<section id="produccion" class="video-section">
+  <div class="vimeo-bg">
+    <iframe
+      src="https://player.vimeo.com/video/1175033447?autoplay=1&muted=1&loop=1&background=1&controls=0"
+      frameborder="0"
+      allow="autoplay; fullscreen"
+      allowfullscreen>
+    </iframe>
+  </div>
+  <div class="video-text"><h2>Producción Visual</h2></div>
+  <a href="produccion.html" class="flecha">Saber más &rarr;</a>
+</section>
+
+<!-- VIDEO: FILMMAKING -->
+
+<section id="filmmaking" class="video-section">
+  <div class="vimeo-bg">
+    <iframe
+      src="https://player.vimeo.com/video/1175033598?autoplay=1&muted=1&loop=1&background=1&controls=0"
+      frameborder="0"
+      allow="autoplay; fullscreen"
+      allowfullscreen>
+    </iframe>
+  </div>
+  <div class="video-text"><h2>Filmmaking</h2></div>
+  <a href="filmmaking.html" class="flecha">Saber más &rarr;</a>
+</section>
+
+<!-- VIDEO: CONTENIDO -->
+
+<section id="contenido" class="video-section">
+  <div class="vimeo-bg">
+    <iframe
+      src="https://player.vimeo.com/video/1175032580?autoplay=1&muted=1&loop=1&background=1&controls=0"
+      frameborder="0"
+      allow="autoplay; fullscreen"
+      allowfullscreen>
+    </iframe>
+  </div>
+  <div class="video-text"><h2>Contenido Creativo</h2></div>
+  <a href="contenido.html" class="flecha">Saber más &rarr;</a>
+</section>
+
+<!-- CONTACTO -->
+
+<section id="contacto" class="reveal">
+  <h2>Contacto</h2>
+  <div class="redes">
+    <a href="https://instagram.com/pableymax" target="_blank">
+      <img src="img/instagram.png.PNG" class="icono-contacto">
+    </a>
+    <a href="https://www.youtube.com/@pableymax/" target="_blank">
+      <img src="img/youtube.png.PNG" class="icono-contacto">
+    </a>
+    <a href="mailto:contacto@pableymax.com">
+      <img src="img/gmail.png.PNG" class="icono-contacto">
+    </a>
+  </div>
+</section>
+
+<!-- SECCIÓN FINAL -->
+
+<section class="final">
+  <h2>PMX</h2>
+  <p>One idea, a thousand ways to see it.</p>
+  <div class="final-links">
+    <div>
+      <h4>Proyectos</h4>
+      <a href="#produccion">Producción Visual</a>
+      <a href="#filmmaking">Filmmaking</a>
+      <a href="#contenido">Contenido Creativo</a>
+    </div>
+    <div>
+      <h4>Redes</h4>
+      <a href="https://instagram.com/pableymax" target="_blank">Instagram</a>
+      <a href="https://youtube.com/@pableymax" target="_blank">YouTube</a>
+      <a href="mailto:contacto@pableymax.com">Email</a>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <p>Colombia</p>
+      <p>contacto@pableymax.com</p>
+    </div>
+    <div>
+      <h4>Más</h4>
+      <a href="#" onclick="openSoon(); return false;">Productos</a>
+      <a href="#" onclick="openKasting(); return false;">Únete como Talento</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 PMX | Pableymax &mdash; Todos los derechos reservados</p>
+</footer>
+
+<script>
+/* ── HAMBURGER / OVERLAY ── */
+const hamburger   = document.getElementById('hamburger');
+const menuOverlay = document.getElementById('menuOverlay');
+
+function openMenu(){
+  hamburger.classList.add('open');
+  menuOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMenu(){
+  hamburger.classList.remove('open');
+  menuOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+hamburger.addEventListener('click', () =>
+  hamburger.classList.contains('open') ? closeMenu() : openMenu()
+);
+document.getElementById('menuClose').addEventListener('click', closeMenu);
+document.querySelectorAll('.menu-link').forEach(l => l.addEventListener('click', closeMenu));
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){ closeMenu(); closeKasting(); closeSoon(); }
+});
+
+/* ── DROPDOWN "MÁS" ── */
+const navMas    = document.getElementById('navMas');
+const navMasBtn = document.getElementById('navMasBtn');
+
+navMasBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const open = navMas.classList.toggle('active');
+  navMasBtn.setAttribute('aria-expanded', open);
+});
+
+document.addEventListener('click', (e) => {
+  if(!navMas.contains(e.target)){
+    navMas.classList.remove('active');
+    navMasBtn.setAttribute('aria-expanded', false);
+  }
+});
+
+/* ── MODAL PRONTO (Productos) ── */
+function openSoon(){
+  document.getElementById('soonBg').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeSoon(){
+  document.getElementById('soonBg').classList.remove('show');
+  document.body.style.overflow = '';
+}
+document.getElementById('soonBg').addEventListener('click', (e) => {
+  if(e.target === document.getElementById('soonBg')) closeSoon();
+});
+
+/* ── MODAL KASTING ── */
+function openKasting(){
+  document.getElementById('modalBg').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  navMas.classList.remove('active');
+}
+function closeKasting(){
+  document.getElementById('modalBg').classList.remove('show');
+  document.body.style.overflow = '';
+}
+document.getElementById('modalBg').addEventListener('click', (e) => {
+  if(e.target === document.getElementById('modalBg')) closeKasting();
+});
+
+/* ── FORMSPREE ── */
+document.getElementById('kastingForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = this.querySelector('.submit-btn');
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('https://formspree.io/f/xkoqkaly', {
+      method: 'POST',
+      body: new FormData(this),
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      btn.textContent = 'Candidatura enviada';
+      btn.style.background = '#0a7a3a';
+      this.reset();
+      setTimeout(() => {
+        btn.textContent = 'Enviar Candidatura \u2192';
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 4000);
+    } else {
+      btn.textContent = 'Error, intenta de nuevo';
+      btn.disabled = false;
+    }
+  } catch(err) {
+    btn.textContent = 'Error de conexión';
+    btn.disabled = false;
+  }
+});
+
+/* ── SCROLL COLOR ── */
+const COLOR_START = { r:2, g:13, b:58 };
+const COLOR_END   = { r:0, g:0,  b:0  };
+const TRANSITION_ZONE = 0.40;
+
+function updateBackground(){
+  const heroH  = document.getElementById('inicio').offsetHeight;
+  const scrollY = window.scrollY;
+  const zone    = heroH * TRANSITION_ZONE;
+  if(scrollY <= 0){
+    document.body.style.backgroundColor = `rgb(${COLOR_START.r},${COLOR_START.g},${COLOR_START.b})`;
+    return;
+  }
+  if(scrollY >= zone){ document.body.style.backgroundColor = `rgb(0,0,0)`; return; }
+  const t    = scrollY / zone;
+  const ease = 1 - Math.pow(1 - t, 3);
+  const r = Math.round(COLOR_START.r + (COLOR_END.r - COLOR_START.r) * ease);
+  const g = Math.round(COLOR_START.g + (COLOR_END.g - COLOR_START.g) * ease);
+  const b = Math.round(COLOR_START.b + (COLOR_END.b - COLOR_START.b) * ease);
+  document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
+}
+
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if(!ticking){
+    requestAnimationFrame(() => { updateBackground(); ticking = false; });
+    ticking = true;
+  }
+});
+updateBackground();
+
+/* ── REVEAL ── */
+function revealOnScroll(){
+  document.querySelectorAll(".reveal").forEach(el => {
+    if(el.getBoundingClientRect().top < window.innerHeight - 100)
+      el.classList.add("visible");
+  });
+}
+window.addEventListener("scroll", revealOnScroll);
+revealOnScroll();
+
+/* ── SCROLL TO ── */
+function scrollToSection(id){
+  document.getElementById(id).scrollIntoView({ behavior:"smooth" });
+}
+</script>
+
+</body>
+</html>
