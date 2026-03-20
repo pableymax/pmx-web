@@ -1,11 +1,35 @@
-<!DOCTYPE html><html lang="es">
-  <link rel="icon" type="image/png" href="favicon.png">
+<!DOCTYPE html>
+
+<html lang="es">
 <head>
-  <meta name="google-site-verification" content="YJBdkq2SGil2b9JriSzhS30olL-M_NPGj2SyacjKI3k" />
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PMX | Pableymax</title>
-  <meta name="description" content="Productora audiovisual especializada en cine, series y cortometrajes. Una idea, mil formas de verla. PMX | Pableymax.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ✅ FIX: favicon dentro del head -->
+
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- ✅ SEO mejorado -->
+
+  <title>PMX | Pableymax — Productora Audiovisual en Colombia</title>
+  <meta name="description" content="Productora audiovisual especializada en cine, series y cortometrajes. Producción visual, filmmaking y contenido creativo. PMX | Pableymax — Colombia.">
+  <meta name="google-site-verification" content="YJBdkq2SGil2b9JriSzhS30olL-M_NPGj2SyacjKI3k">
+
+  <!-- ✅ Open Graph para redes sociales -->
+
+  <meta property="og:title" content="PMX | Pableymax — Productora Audiovisual">
+  <meta property="og:description" content="Una idea, mil formas de verla. Producción visual, filmmaking y contenido creativo.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pableymax.com">
+  <meta property="og:image" content="https://pableymax.com/img/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PMX | Pableymax — Productora Audiovisual">
+  <meta name="twitter:description" content="Una idea, mil formas de verla.">
+
+  <!-- ✅ Preload del logo hero (imagen más importante) -->
+
+  <link rel="preload" as="image" href="img/logo.png.PNG">
+
 <style>
 html{ scroll-behavior:smooth; }
 *{ margin:0; padding:0; box-sizing:border-box; }
@@ -13,7 +37,7 @@ body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
   background:#020d3a;
   color:#fff;
-  transition:background-color 0.04s linear;
+  /* ✅ FIX: eliminada transition en body — el color lo maneja JS directamente, la transition CSS interfería */
 }
 nav{
   display:flex;
@@ -433,14 +457,22 @@ box-shadow:0 20px 40px rgba(10,44,255,0.3);
 .card h3{ margin-bottom:15px; }
 footer{ padding:40px; text-align:center; background:#000; color:#888; }
 .redes{ margin-top:30px; display:flex; justify-content:center; gap:35px; flex-wrap:wrap; }
-.redes img{ width:28px; filter:brightness(0) invert(1); transition:0.3s; cursor:pointer; }
+/* ✅ dimensiones explícitas en iconos de contacto para evitar CLS */
+.redes img{
+  width:200px; height:200px;
+  object-fit:contain;
+  filter:brightness(0) invert(1); transition:0.3s; cursor:pointer;
+}
 .redes img:hover{
 transform:scale(1.2);
 filter:brightness(0) invert(1) drop-shadow(0 0 8px #0a2cff);
 }
-.icono-contacto{ width:200px; }
 .logo-hero{
-width:420px; margin-bottom:20px;
+width:420px;
+/* ✅ height explícito para evitar CLS */
+height:auto;
+aspect-ratio: 420/140;
+margin-bottom:20px;
 filter:drop-shadow(0 0 40px #0a2cff) drop-shadow(0 0 80px #0a2cff);
 animation:flotar 6s ease-in-out infinite;
 }
@@ -467,7 +499,7 @@ margin:120px auto; padding:0 80px;
 overflow:hidden;
 }
 .video-section::after{
-content:””; position:absolute;
+content:""; position:absolute;
 width:100%; height:100%; top:0; left:0;
 background:linear-gradient(to bottom,rgba(0,0,0,0.2),rgba(0,0,0,0.6));
 pointer-events:none;
@@ -504,6 +536,8 @@ width:100%; height:100%;
 overflow:hidden;
 border-radius:25px;
 z-index:0;
+/* ✅ fondo negro mientras carga el video */
+background:#000;
 }
 .vimeo-bg iframe{
 position:absolute;
@@ -516,6 +550,21 @@ transform:translate(-50%,-50%);
 filter:brightness(0.65) contrast(1.1);
 pointer-events:none;
 border:none;
+}
+
+/* ✅ Placeholder animado mientras el video no ha cargado */
+.vimeo-bg.loading::before{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(90deg, #0a0a0a 25%, #111 50%, #0a0a0a 75%);
+background-size:200% 100%;
+animation:shimmer 1.5s infinite;
+z-index:1;
+}
+@keyframes shimmer{
+0%{ background-position:200% 0; }
+100%{ background-position:-200% 0; }
 }
 
 .reveal{ opacity:0; transform:translateY(60px); transition:all 1.2s ease; }
@@ -548,8 +597,7 @@ section h2{ font-size:26px; margin-bottom:36px; }
 .vimeo-bg iframe{ width:100vw; height:56.25vw; min-height:200px; }
 .video-text h2{ font-size:22px; letter-spacing:2px; }
 .flecha{ opacity:1 !important; transform:none !important; position:absolute; bottom:14px; right:14px; font-size:12px; padding:9px 18px; }
-.icono-contacto{ width:110px; }
-.redes{ gap:16px; }
+.redes img{ width:110px; height:110px; }
 .final{ padding:70px 20px; }
 .final h2{ font-size:30px; letter-spacing:1px; }
 .final > p{ font-size:14px; }
@@ -571,8 +619,8 @@ footer{ padding:20px 16px; font-size:11px; line-height:1.6; }
 
 <nav>
   <div class="logo">
-    <a href="#inicio">
-      <img src="img/logo.png.PNG" alt="PMX Logo">
+    <a href="#inicio" aria-label="PMX Inicio">
+      <img src="img/logo.png.PNG" alt="PMX Pableymax Logo" width="100" height="40">
     </a>
   </div>
   <ul>
@@ -580,19 +628,19 @@ footer{ padding:20px 16px; font-size:11px; line-height:1.6; }
     <li><a href="#proyectos">Proyectos</a></li>
     <li><a href="#contacto">Contacto</a></li>
     <li class="nav-mas" id="navMas">
-      <button class="nav-mas-btn" id="navMasBtn" aria-expanded="false">
+      <button class="nav-mas-btn" id="navMasBtn" aria-expanded="false" aria-haspopup="true">
         Más <span class="arrow"></span>
       </button>
-      <div class="nav-mas-dropdown" id="navMasDropdown">
-        <div class="dropdown-item" onclick="openSoon(); navMas.classList.remove('active');">
-          <div class="d-icon">PMX</div>
+      <div class="nav-mas-dropdown" id="navMasDropdown" role="menu">
+        <div class="dropdown-item" role="menuitem" tabindex="0" onclick="openSoon(); navMas.classList.remove('active');">
+          <div class="d-icon" aria-hidden="true">PMX</div>
           <div class="d-text">
             <strong>Productos</strong>
             <small>Nuestros Productos</small>
           </div>
         </div>
-        <div class="dropdown-item" onclick="openKasting()">
-          <div class="d-icon">CV</div>
+        <div class="dropdown-item" role="menuitem" tabindex="0" onclick="openKasting()">
+          <div class="d-icon" aria-hidden="true">CV</div>
           <div class="d-text">
             <strong>Únete como Talento</strong>
             <small>Convocatoria Audiovisual Abierta</small>
@@ -601,14 +649,14 @@ footer{ padding:20px 16px; font-size:11px; line-height:1.6; }
       </div>
     </li>
   </ul>
-  <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+  <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
 <!-- OVERLAY MENU (MÓVIL) -->
 
-<div class="menu-overlay" id="menuOverlay">
+<div class="menu-overlay" id="menuOverlay" role="dialog" aria-modal="true" aria-label="Menú de navegación">
   <button class="menu-close" id="menuClose" aria-label="Cerrar menú">
     <span></span><span></span>
   </button>
@@ -622,14 +670,14 @@ footer{ padding:20px 16px; font-size:11px; line-height:1.6; }
       <p class="overlay-mas-label">Más</p>
       <div class="overlay-mas-items">
         <div class="overlay-mas-item" onclick="closeMenu(); setTimeout(openSoon,350)">
-          <div class="d-icon">PMX</div>
+          <div class="d-icon" aria-hidden="true">PMX</div>
           <div>
             <strong>Productos</strong>
             <small>Nuestros Productos</small>
           </div>
         </div>
         <div class="overlay-mas-item" onclick="closeMenu(); setTimeout(openKasting,350)">
-          <div class="d-icon">CV</div>
+          <div class="d-icon" aria-hidden="true">CV</div>
           <div>
             <strong>Únete como Talento</strong>
             <small>Convocatoria Audiovisual Abierta</small>
@@ -646,27 +694,27 @@ footer{ padding:20px 16px; font-size:11px; line-height:1.6; }
 
 <!-- MODAL PRONTO (Productos) -->
 
-<div class="soon-bg" id="soonBg">
+<div class="soon-bg" id="soonBg" role="dialog" aria-modal="true" aria-labelledby="soonTitle">
   <div class="soon-modal">
-    <button class="soon-close" onclick="closeSoon()">&#x2715;</button>
+    <button class="soon-close" onclick="closeSoon()" aria-label="Cerrar">&#x2715;</button>
     <p class="soon-eyebrow">PMX · Productos</p>
-    <h2 class="soon-title">Esta función no está<br>disponible aún</h2>
-    <div class="soon-line"></div>
+    <h2 class="soon-title" id="soonTitle">Esta función no está<br>disponible aún</h2>
+    <div class="soon-line" aria-hidden="true"></div>
     <p class="soon-text">Estamos trabajando en algo. Pronto lo estará.</p>
   </div>
 </div>
 
 <!-- MODAL KASTING -->
 
-<div class="modal-bg" id="modalBg">
+<div class="modal-bg" id="modalBg" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal" id="modal">
     <div class="modal-header">
       <div>
         <p class="modal-eyebrow">PMX · Convocatoria Abierta</p>
-        <h2 class="modal-title">Únete como Talento</h2>
+        <h2 class="modal-title" id="modalTitle">Únete como Talento</h2>
         <p class="modal-subtitle">Producción Audiovisual — Buscamos perfiles creativos y técnicos</p>
       </div>
-      <button class="modal-close" onclick="closeKasting()">&#x2715;</button>
+      <button class="modal-close" onclick="closeKasting()" aria-label="Cerrar modal">&#x2715;</button>
     </div>
     <div class="modal-body">
       <p class="modal-intro">
@@ -701,7 +749,7 @@ footer{ padding:20px 16px; font-size:11px; line-height:1.6; }
           <p class="role-desc">Visión creativa, dirección de actores y coordinación general de producción en set.</p>
         </div>
       </div>
-      <div class="upload-area">
+      <div class="upload-area" role="button" tabindex="0" aria-label="Adjuntar portafolio o videocasting">
         <h3>Adjunta tu Portafolio o Videocasting</h3>
         <p>Arrastra tu archivo o haz clic para seleccionar<br>
         MP4, MOV, PDF · máx 500 MB · o pega un enlace de YouTube / Drive</p>
@@ -709,20 +757,20 @@ footer{ padding:20px 16px; font-size:11px; line-height:1.6; }
       <form id="kastingForm">
         <div class="form-grid">
           <div class="form-field">
-            <label>Nombre completo</label>
-            <input type="text" name="nombre" placeholder="Tu nombre" required>
+            <label for="f-nombre">Nombre completo</label>
+            <input type="text" id="f-nombre" name="nombre" placeholder="Tu nombre" required autocomplete="name">
           </div>
           <div class="form-field">
-            <label>Email</label>
-            <input type="email" name="email" placeholder="correo@email.com" required>
+            <label for="f-email">Email</label>
+            <input type="email" id="f-email" name="email" placeholder="correo@email.com" required autocomplete="email">
           </div>
           <div class="form-field">
-            <label>Teléfono</label>
-            <input type="tel" name="telefono" placeholder="+57 300 000 0000">
+            <label for="f-tel">Teléfono</label>
+            <input type="tel" id="f-tel" name="telefono" placeholder="+57 300 000 0000" autocomplete="tel">
           </div>
           <div class="form-field">
-            <label>Rol al que aplicas</label>
-            <select name="rol">
+            <label for="f-rol">Rol al que aplicas</label>
+            <select id="f-rol" name="rol">
               <option value="">Selecciona...</option>
               <option>Actor</option>
               <option>Camarógrafo</option>
@@ -733,12 +781,12 @@ footer{ padding:20px 16px; font-size:11px; line-height:1.6; }
             </select>
           </div>
           <div class="form-field full">
-            <label>Enlace a portafolio / vídeo (opcional)</label>
-            <input type="url" name="portfolio" placeholder="https://youtube.com/...">
+            <label for="f-portfolio">Enlace a portafolio / vídeo (opcional)</label>
+            <input type="url" id="f-portfolio" name="portfolio" placeholder="https://youtube.com/...">
           </div>
           <div class="form-field full">
-            <label>Cuéntanos sobre ti</label>
-            <textarea name="mensaje" placeholder="Experiencia, formación, proyectos previos, herramientas..."></textarea>
+            <label for="f-mensaje">Cuéntanos sobre ti</label>
+            <textarea id="f-mensaje" name="mensaje" placeholder="Experiencia, formación, proyectos previos, herramientas..."></textarea>
           </div>
         </div>
         <button class="submit-btn" type="submit">Enviar Candidatura &rarr;</button>
@@ -750,11 +798,18 @@ footer{ padding:20px 16px; font-size:11px; line-height:1.6; }
 <!-- HERO -->
 
 <div class="hero" id="inicio">
-  <a href="#inicio">
-    <img src="img/logo.png.PNG" class="logo-hero">
+  <a href="#inicio" aria-label="PMX - Ir al inicio">
+    <!-- ✅ loading="eager" en imagen hero (es LCP, debe cargar inmediato) + dimensiones explícitas -->
+    <img src="img/logo.png.PNG"
+         class="logo-hero"
+         alt="PMX Pableymax — Productora Audiovisual"
+         width="420"
+         height="140"
+         loading="eager"
+         fetchpriority="high">
   </a>
   <p>One idea, a thousand ways to see it.</p>
-  <button onclick="location.href='#proyectos'">Ver proyectos</button>
+  <button onclick="location.href='#proyectos'" aria-label="Ver proyectos de PMX">Ver proyectos</button>
 </div>
 
 <!-- PROYECTOS -->
@@ -762,15 +817,15 @@ footer{ padding:20px 16px; font-size:11px; line-height:1.6; }
 <section id="proyectos" class="reveal">
   <h2>PROYECTOS</h2>
   <div class="grid">
-    <div class="card" onclick="scrollToSection('produccion')">
+    <div class="card" onclick="scrollToSection('produccion')" role="button" tabindex="0" aria-label="Ver Producción Visual">
       <h3>Producción Visual</h3>
       <p>Creación de contenido cinematográfico como películas, cortometrajes, largometrajes y series.</p>
     </div>
-    <div class="card" onclick="scrollToSection('filmmaking')">
+    <div class="card" onclick="scrollToSection('filmmaking')" role="button" tabindex="0" aria-label="Ver Filmmaking">
       <h3>Filmmaking</h3>
       <p>Creación de videos y contenido audiovisual con estilo cinematográfico.</p>
     </div>
-    <div class="card" onclick="scrollToSection('contenido')">
+    <div class="card" onclick="scrollToSection('contenido')" role="button" tabindex="0" aria-label="Ver Contenido Creativo">
       <h3>Contenido Creativo</h3>
       <p>Videos e ideas visuales para redes sociales.</p>
     </div>
@@ -779,47 +834,28 @@ footer{ padding:20px 16px; font-size:11px; line-height:1.6; }
 
 <!-- VIDEO: PRODUCCIÓN -->
 
+<!-- ✅ data-src en lugar de src — el iframe se carga solo cuando es visible (lazy load) -->
+
 <section id="produccion" class="video-section">
-  <div class="vimeo-bg">
- <iframe
-      src="https://player.vimeo.com/video/1175033447?autoplay=1&muted=1&loop=1&background=1&controls=0"
-      frameborder="0"
-      allow="autoplay; fullscreen"
-      allowfullscreen>
-    </iframe>
-  </div>
+  <div class="vimeo-bg loading" data-vimeo="https://player.vimeo.com/video/1175033447?autoplay=1&muted=1&loop=1&background=1&controls=0"></div>
   <div class="video-text"><h2>Producción Visual</h2></div>
-  <a href="produccion.html" class="flecha">Saber más &rarr;</a>
+  <a href="produccion.html" class="flecha" aria-label="Saber más sobre Producción Visual">Saber más &rarr;</a>
 </section>
 
 <!-- VIDEO: FILMMAKING -->
 
 <section id="filmmaking" class="video-section">
-  <div class="vimeo-bg">
-    <iframe
-      src="https://player.vimeo.com/video/1175033598?autoplay=1&muted=1&loop=1&background=1&controls=0"
-      frameborder="0"
-      allow="autoplay; fullscreen"
-      allowfullscreen>
-    </iframe>
-  </div>
+  <div class="vimeo-bg loading" data-vimeo="https://player.vimeo.com/video/1175033598?autoplay=1&muted=1&loop=1&background=1&controls=0"></div>
   <div class="video-text"><h2>Filmmaking</h2></div>
-  <a href="filmmaking.html" class="flecha">Saber más &rarr;</a>
+  <a href="filmmaking.html" class="flecha" aria-label="Saber más sobre Filmmaking">Saber más &rarr;</a>
 </section>
 
 <!-- VIDEO: CONTENIDO -->
 
 <section id="contenido" class="video-section">
-  <div class="vimeo-bg">
-  <iframe
-      src="https://player.vimeo.com/video/1175032580?autoplay=1&muted=1&loop=1&background=1&controls=0"
-      frameborder="0"
-      allow="autoplay; fullscreen"
-      allowfullscreen>
-    </iframe>
-  </div>
+  <div class="vimeo-bg loading" data-vimeo="https://player.vimeo.com/video/1175032580?autoplay=1&muted=1&loop=1&background=1&controls=0"></div>
   <div class="video-text"><h2>Contenido Creativo</h2></div>
-  <a href="contenido.html" class="flecha">Saber más &rarr;</a>
+  <a href="contenido.html" class="flecha" aria-label="Saber más sobre Contenido Creativo">Saber más &rarr;</a>
 </section>
 
 <!-- CONTACTO -->
@@ -827,14 +863,15 @@ footer{ padding:20px 16px; font-size:11px; line-height:1.6; }
 <section id="contacto" class="reveal">
   <h2>Contacto</h2>
   <div class="redes">
-    <a href="https://instagram.com/pableymax" target="_blank">
-      <img src="img/instagram.png.png" class="icono-contacto">
+    <!-- ✅ rel="noopener noreferrer" en todos los links externos + aria-label descriptivo -->
+    <a href="https://instagram.com/pableymax" target="_blank" rel="noopener noreferrer" aria-label="PMX en Instagram">
+      <img src="img/instagram.png.png" alt="Instagram" width="200" height="200" loading="lazy">
     </a>
-    <a href="https://www.youtube.com/@pableymax/" target="_blank">
-      <img src="img/youtube.png.png" class="icono-contacto">
+    <a href="https://www.youtube.com/@pableymax/" target="_blank" rel="noopener noreferrer" aria-label="PMX en YouTube">
+      <img src="img/youtube.png.png" alt="YouTube" width="200" height="200" loading="lazy">
     </a>
-    <a href="mailto:contacto@pableymax.com">
-      <img src="img/gmail.png.png" class="icono-contacto">
+    <a href="mailto:contacto@pableymax.com" aria-label="Enviar email a PMX">
+      <img src="img/gmail.png.png" alt="Email" width="200" height="200" loading="lazy">
     </a>
   </div>
 </section>
@@ -853,8 +890,8 @@ footer{ padding:20px 16px; font-size:11px; line-height:1.6; }
     </div>
     <div>
       <h4>Redes</h4>
-      <a href="https://instagram.com/pableymax" target="_blank">Instagram</a>
-      <a href="https://youtube.com/@pableymax" target="_blank">YouTube</a>
+      <a href="https://instagram.com/pableymax" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="https://youtube.com/@pableymax" target="_blank" rel="noopener noreferrer">YouTube</a>
       <a href="mailto:contacto@pableymax.com">Email</a>
     </div>
     <div>
@@ -881,11 +918,13 @@ const menuOverlay = document.getElementById('menuOverlay');
 
 function openMenu(){
   hamburger.classList.add('open');
+  hamburger.setAttribute('aria-expanded', 'true');
   menuOverlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 function closeMenu(){
   hamburger.classList.remove('open');
+  hamburger.setAttribute('aria-expanded', 'false');
   menuOverlay.classList.remove('open');
   document.body.style.overflow = '';
 }
@@ -912,7 +951,7 @@ navMasBtn.addEventListener('click', (e) => {
 document.addEventListener('click', (e) => {
   if(!navMas.contains(e.target)){
     navMas.classList.remove('active');
-    navMasBtn.setAttribute('aria-expanded', false);
+    navMasBtn.setAttribute('aria-expanded', 'false');
   }
 });
 
@@ -957,7 +996,7 @@ document.getElementById('kastingForm').addEventListener('submit', async function
       headers: { 'Accept': 'application/json' }
     });
     if (res.ok) {
-      btn.textContent = 'Candidatura enviada';
+      btn.textContent = 'Candidatura enviada ✓';
       btn.style.background = '#0a7a3a';
       this.reset();
       setTimeout(() => {
@@ -1020,6 +1059,41 @@ revealOnScroll();
 function scrollToSection(id){
   document.getElementById(id).scrollIntoView({ behavior:"smooth" });
 }
+
+/* ── ✅ LAZY LOAD VIMEO (el cambio más importante para velocidad) ──
+   Los iframes de Vimeo NO se crean hasta que el usuario hace scroll
+   hasta esa sección. Reduce la carga inicial de ~3 videos a 0.
+   Usa IntersectionObserver con margen de 200px para precargar
+   justo antes de que el video sea visible.
+*/
+const vimeoObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      const bg = entry.target;
+      const src = bg.dataset.vimeo;
+      if(src && !bg.querySelector('iframe')){
+        const iframe = document.createElement('iframe');
+        iframe.src = src;
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('allow', 'autoplay; fullscreen');
+        iframe.setAttribute('allowfullscreen', '');
+        iframe.setAttribute('title', 'Video de fondo PMX');
+        bg.appendChild(iframe);
+        bg.classList.remove('loading');
+        // Dejar de observar una vez cargado
+        vimeoObserver.unobserve(bg);
+      }
+    }
+  });
+}, {
+  rootMargin: '200px 0px', // Precarga 200px antes de que sea visible
+  threshold: 0
+});
+
+// Observar todos los contenedores de video
+document.querySelectorAll('.vimeo-bg[data-vimeo]').forEach(bg => {
+  vimeoObserver.observe(bg);
+});
 </script>
 
 </body>
