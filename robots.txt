@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pableymax.github.io/pmx-web/sitemap.xml
+Sitemap: https://pableymax.com/sitemap.xml
